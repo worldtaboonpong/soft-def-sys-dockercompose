@@ -1,0 +1,35 @@
+version : '3.8'
+services:
+    api :
+        container_name: api-container_name
+        tty: true
+        build: 
+            context: backend
+            dockerfile: dockerFile
+        ports: 
+            - "4000:4000"
+        depends_on:
+            - db
+    client :
+        container_name: client-container_name
+        tty: true
+        build: 
+            context: frontend
+            dockerfile: dockerFile
+        ports: 
+            - "3000:3000"
+        depends_on : 
+            - api
+    db:
+        image: mysql
+        environment:
+            MYSQL_DATABASE: 'coffeestore'
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: 'w1o2r3l4d5'
+            MYSQL_ROOT_PASSWORD: 'w1o2r3l4d5'
+        ports:
+            - "3307:3306"
+        volumes:
+            - my-db:/data
+volumes:
+    my-db:
